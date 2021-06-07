@@ -89,7 +89,7 @@ namespace Id_nomi
                 Console.WriteLine("\t..........");
             }
 
-            if(LoadSaveFile.SaveIntoCSV(coordinates.ToString(), userPath, filename))
+            if(LoadSaveFile.SaveIntoCSV(coordinates.ToString(), userPath, String.Concat(filename, FILE_SAVE_EXTENSION)))
             {
                 Console.WriteLine(Messages.FILE_GENERATE);
             }
