@@ -2,10 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <StartupObject>Id_nomi.Program</StartupObject>
     <Authors>Lluís Cobos Aumatell</Authors>
     <Company>Cutre Studio</Company>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>

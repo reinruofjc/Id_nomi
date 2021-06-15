@@ -27,6 +27,8 @@ namespace Id_nomi.My_IO
         /// </summary>
         private char END_CHAR = ']';
 
+        private char START_CHAR = '[';
+
         /// <summary>
         /// caracter para delimitar las coordenadas, como el excel pilla mal las comas y puntos, cada coordenada está delimitada por esto
         /// </summary>
@@ -72,6 +74,8 @@ namespace Id_nomi.My_IO
         /// </summary>
         private char[] DIMENSIONS = { 'X','Y','Z'};
 
+        private char NEGATIVE_CHAR = '-';
+
         /// <summary>
         /// Método que devuelve un string sólo con las coordenadas
         /// </summary>
@@ -112,13 +116,49 @@ namespace Id_nomi.My_IO
         {
             string temp = "";
             char currentChar;
+            //clonamos el rawcoordenates, para operar con esto
+            //TODO: quizás devolver string o algo así 
+            string operation = (string)rawCoordenates.Clone();
+
+            //lo haremos de otra forma ahora, como los datos están entre [x,y,z],grabaremos cuando pillamos el primer [ y acaberomos con el último
+            for (int i = 0; i < operation.Length; i++)
+            {
+                currentChar = operation[i];
+
+                //si hemos pillado el start char, copiamos hasta llegar al final!
+                if(currentChar == START_CHAR)
+                {
+                    //metemos el avance en una acción
+                    //TODO: no sé si la gramática tá bien jejeje
+                    Action advance = () => { i++; currentChar = operation[i]; };
+                    advance();
+
+                    while(currentChar != END_CHAR)
+                    {
+                        temp = String.Concat(temp, currentChar);
+                        advance();                     
+                    }
+                    //metemos delimitador
+                    //OJU! no te olvides, que es propenso a bug
+                    temp = String.Concat(temp, DELIMITATION_CHAR);
+                    break;
+                }
+            }
+
+            #region OLD CODE, working but more complex
+            /*
+            
             for (int i = 0; i < rawCoordenates.Length; i++)
             {
                 currentChar = rawCoordenates[i];
                 //Console.WriteLine(currentChar);
 
-                //si no es algo de esto miraremos que nosea el último
-                if (IsCharDigit(currentChar) || currentChar == DECIMAL_CHAR)
+                //sólo nos interesa el negativo si no ha
+                if(temp.Length == 0 && currentChar == NEGATIVE_CHAR)
+                {
+
+                }
+                else if (IsCharDigit(currentChar) || currentChar == DECIMAL_CHAR)
                 {
                     temp = String.Concat(temp,currentChar);
                 }
@@ -132,7 +172,8 @@ namespace Id_nomi.My_IO
                     temp = String.Concat(temp,DELIMITATION_CHAR);
                     break;
                 }
-            }
+            }*/
+            #endregion
 
             //vamos juntando
             rawCoordenates = String.Concat(temp);
