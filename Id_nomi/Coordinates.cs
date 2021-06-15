@@ -135,6 +135,9 @@ namespace Id_nomi.My_IO
 
                     while(currentChar != END_CHAR)
                     {
+                        if (currentChar == SEPARATION_CHAR)
+                            currentChar = DELIMITATION_CHAR;
+                           
                         temp = String.Concat(temp, currentChar);
                         advance();                     
                     }
