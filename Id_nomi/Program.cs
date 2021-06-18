@@ -49,11 +49,10 @@ namespace Id_nomi
 
             //creamos coordinates
             Coordinates coord = new Coordinates();
-
-            //creamos el header
-            coordinates.Append(coord.CreateHeader());
             
-
+            //contamos el número de id's que hauy para hacer bien el header
+            int numberCoord = -1;
+            int maxCoords = -1;
             //por cada archivo metemos los valores
             foreach(string s in files)
             {
@@ -61,13 +60,21 @@ namespace Id_nomi
                 Console.WriteLine(Messages.READING_MESS + s);
                 
                 rawJSon.Clear();
-
+                
                 //metemos coordenadas
                 rawJSon.Append(LoadSaveFile.ReadJSon(s));
-                coordinates.Append(String.Concat(MyDirectory.GetFileName(s), ';', coord.GetCoordenates(rawJSon.ToString()), "\n"));
+                coordinates.Append(String.Concat(MyDirectory.GetFileName(s), ';', coord.GetCoordenates(rawJSon.ToString(), out numberCoord), "\n"));
                 Console.WriteLine(Messages.READING_DONE_MESS + s);
+                //si el último número es más pequeño que numberCoor, entonces cambiamos
+                if(maxCoords < numberCoord)
+                {
+                    maxCoords = numberCoord;
+                    Console.WriteLine("Landmark num: " + maxCoords);
+                }
             }
 
+            //creamos header
+            coordinates.Insert(0, coord.CreateHeader(maxCoords));
             //cadena en blanco para, bueno, separar un poco
             Console.WriteLine();
             
@@ -80,7 +87,7 @@ namespace Id_nomi
             //ahora vendría el filename
             string filename = input.GetFilename(userPath);
 
-            //TODO: Esto hay que cambgiarlo
+            //TODO: Esto hay que cambiarlo
 
             Console.WriteLine(String.Format(Messages.FILE_SELECTED, filename, FILE_SAVE_EXTENSION));
 

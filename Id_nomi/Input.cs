@@ -12,6 +12,13 @@ namespace Id_nomi
         private static string ANSW_YES = "s";
         private static string ANSW_NO = "n";
         private static string OPERATOR = "-> ";
+
+        /// <summary>
+        /// Pilla el path a partir del input del usuario. 
+        /// </summary>
+        /// <param name="createIfNotExist">hay que crear la si no existe?</param>
+        /// <param name="message">mensaje a mostrar</param>
+        /// <returns>el path</returns>
         public string GetPathFromInput(in bool createIfNotExist, in string message)
         {
             string inputPath = "";
@@ -47,6 +54,11 @@ namespace Id_nomi
             return inputPath;
         }
 
+        /// <summary>
+        /// Pilla un input de sí o no, con su control de errores y demás
+        /// </summary>
+        /// <param name="message">mensaje a mostrar en la consola</param>
+        /// <returns>true = yes, false = no</returns>
         public bool GetInputYesOrNo(in string message)
         {
             string input;
@@ -68,6 +80,11 @@ namespace Id_nomi
             return input == ANSW_YES;
         }
 
+        /// <summary>
+        /// Pilla el nombre de un archivo en el path utilizando el <see cref="Program.FILE_SAVE_EXTENSION"/> como extensión
+        /// </summary>
+        /// <param name="path">path que nos interesa</param>
+        /// <returns>nombre del archivo</returns>
         public string GetFilename(in string path)
         {
             string filename;
@@ -97,16 +114,20 @@ namespace Id_nomi
             return filename;
         }
 
+        /// <summary>
+        /// Es el valor sí ó no?
+        /// </summary>
+        /// <param name="mess">mensaje a mostrar</param>
+        /// <returns>´true = sí, false = no</returns>
         public bool IsValueYesrOrNo(string mess)
         {
             return (mess == ANSW_YES.ToString() || mess == ANSW_NO.ToString());
         }
 
-        public bool IsCreateFolder(string mess)
-        {
-            return mess == ANSW_YES;
-        }       
-
+        /// <summary>
+        /// Pilla el input de la consola, sin más
+        /// </summary>
+        /// <returns>input en string</returns>
         public string GetInput()
         {
             Console.Write(OPERATOR);

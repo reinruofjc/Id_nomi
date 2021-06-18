@@ -81,22 +81,25 @@ namespace Id_nomi.My_IO
         /// </summary>
         /// <param name="message">string completo del archivo</param>
         /// <returns>String con coordenadas</returns>
-        public string GetCoordenates(in string message)
+        public string GetCoordenates(in string message, out int numberCoord)
         {
             StringBuilder coordenates = new StringBuilder();
-
+            numberCoord = 0;
             //leemos línea por línea del archivo
             StringReader reader = new StringReader(message);
             string temp = reader.ReadLine();
-
+            string separated = "";
             //si hay líneas, hay posibilidades de pillar lo que nos interesa
             while (temp != null)
             {
                 //si la línea contiene lo que nos interesa, pillamos las coordenadas
                 if (temp.Contains(FIELD_NAME))
                 {
-                    SeparateCoordenates(ref temp);
-                    coordenates.Append(temp);
+                    if(SeparateCoordenates(temp, out separated))
+                    {
+                        coordenates.Append(separated);
+                        numberCoord++;
+                    }                    
                 }
 
                 //leemos siguiente línea
@@ -112,9 +115,9 @@ namespace Id_nomi.My_IO
         /// "position":[coord_x, coord_y, coord_z]
         /// </summary>
         /// <param name="rawCoordenates">Línera raw de texto</param>
-        private void SeparateCoordenates(ref string rawCoordenates)
+        private bool SeparateCoordenates(in string rawCoordenates, out string separatedCoordenates)
         {
-            string temp = "";
+            separatedCoordenates = "";
             char currentChar;
             //clonamos el rawcoordenates, para operar con esto
             //TODO: quizás devolver string o algo así 
@@ -138,48 +141,18 @@ namespace Id_nomi.My_IO
                         if (currentChar == SEPARATION_CHAR)
                             currentChar = DELIMITATION_CHAR;
                            
-                        temp = String.Concat(temp, currentChar);
+                        separatedCoordenates = String.Concat(separatedCoordenates, currentChar);
                         advance();                     
                     }
                     //metemos delimitador
                     //OJU! no te olvides, que es propenso a bug
-                    temp = String.Concat(temp, DELIMITATION_CHAR);
-                    break;
+                    separatedCoordenates = String.Concat(separatedCoordenates, DELIMITATION_CHAR);
+                    return true;
                 }
             }
 
-            #region OLD CODE, working but more complex
-            /*
-            
-            for (int i = 0; i < rawCoordenates.Length; i++)
-            {
-                currentChar = rawCoordenates[i];
-                //Console.WriteLine(currentChar);
-
-                //sólo nos interesa el negativo si no ha
-                if(temp.Length == 0 && currentChar == NEGATIVE_CHAR)
-                {
-
-                }
-                else if (IsCharDigit(currentChar) || currentChar == DECIMAL_CHAR)
-                {
-                    temp = String.Concat(temp,currentChar);
-                }
-                else if(currentChar == SEPARATION_CHAR)
-                {
-                    temp = String.Concat(temp,DELIMITATION_CHAR);
-                }
-                else if (currentChar == END_CHAR)
-                {
-                    //si acabamos, metemos ; y nos vamos
-                    temp = String.Concat(temp,DELIMITATION_CHAR);
-                    break;
-                }
-            }*/
-            #endregion
-
-            //vamos juntando
-            rawCoordenates = String.Concat(temp);
+            //si llegamos aquí significa que hemos pillado algo que no es            
+            return false;
         }
 
         /// <summary>
@@ -196,6 +169,7 @@ namespace Id_nomi.My_IO
         /// Crea el header con las id-s
         /// </summary>
         /// <returns>string con el header</returns>
+        [Obsolete("Usar el que tiene argumento")]
         public string CreateHeader()
         {
             string header = String.Concat(HEADER_TEXT, ";");
@@ -213,5 +187,25 @@ namespace Id_nomi.My_IO
             return header;
         }
 
+        /// <summary>
+        /// Crea el header con las id-s
+        /// </summary>
+        /// <returns>string con el header</returns>
+        public string CreateHeader(in int numberCoord)
+        {
+            string header = String.Concat(HEADER_TEXT, DELIMITATION_CHAR);
+
+            for (int i = ID_START; i <= numberCoord; i++)
+            {
+                for (int j = 0; j < DIMENSIONS.Length; j++)
+                {
+                    header += String.Concat(ID_TEXT, i, '_', DIMENSIONS[j], DELIMITATION_CHAR);
+                }
+                
+            }
+
+            header += "\n";
+            return header;
+        }
     }
 }
