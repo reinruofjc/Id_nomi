@@ -9,7 +9,7 @@ namespace Id_nomi
     public class Messages
     {
         public static string CREDITS { get => "Hecho por: Lluís Cobos Aumatell."; }
-        public static string VERSION { get => "Versión: 1.00;"; }
+        public static string VERSION { get => "Versión: 1.0.2;"; }
         
         public static string WELCOME_MESS { get => "Bienvenid@ al programa custom para unir las posiciones de los json en un simple CSV."; }
         public static string PATH_ADD_MESS { get => "Escribe la ruta completa de la carpeta donde están los archivos Json:"; }

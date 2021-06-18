@@ -6,7 +6,7 @@ namespace Id_nomi
 {
     /* Dejo aquí la línera para poder hacer el building completo para que no sea necesaria el entorno .Net
      * dotnet publish -c Release -r <RID> --self-contained true  -> donde <RID> https://docs.microsoft.com/en-us/dotnet/core/rid-catalog#windows-rids
-     * win10-x64
+     * dotnet publish -c Release -r win10-x64 --self-contained true
      */
     class Program
     {
